@@ -1,0 +1,6 @@
+{
+  "modelId": "all-MiniLM-L6-v2-int8",
+  "dims": 384,
+  "maxTokens": 256,
+  "license": "Apache-2.0"
+}

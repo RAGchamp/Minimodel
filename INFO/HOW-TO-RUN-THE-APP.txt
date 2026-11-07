@@ -1,0 +1,3 @@
+C:\Users\dayam>cd C:\Daya\RAGchamp\LOCAL-MINI-MODEL\Web-App
+
+C:\Daya\RAGchamp\LOCAL-MINI-MODEL\Web-App>npm run serve

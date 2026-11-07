@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How This App Helps the User</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root{
+    --biz-blue:#0d6efd;
+    --biz-blue-dark:#084298;
+    --biz-yellow:#ffc107;
+    --biz-red:#dc3545;
+    --biz-green:#198754;
+    --biz-orange:#e8710a;
+    --nav-blue:#04264d;
+    --nav-yellow:#ffd60a;
+  }
+  body{ background:#f7f8fa; margin:0; }
+
+  /* Sticky top nav */
+  .topnav{
+    position:sticky; top:0; z-index:1030;
+    background:var(--nav-blue);
+    color:var(--nav-yellow);
+    padding:.9rem 1.5rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 .15rem .5rem rgba(0,0,0,.25);
+  }
+  .topnav .brand{ display:inline-flex; align-items:center; text-decoration:none; }
+  .topnav .brand-logo{ height:44px; width:auto; display:block; }
+  .topnav .tagline{
+    font-weight:600; font-size:1.05rem; color:var(--nav-yellow);
+    letter-spacing:.15em; word-spacing:.6em; font-style:italic;
+  }
+  @media (max-width:576px){
+    .topnav{ flex-direction:column; text-align:center; gap:.4rem; padding:.75rem 1rem; }
+    .topnav .tagline{ font-size:.8rem; letter-spacing:.1em; word-spacing:.3em; }
+  }
+
+  section[id]{ scroll-margin-top:84px; }
+  html{ scroll-behavior:smooth; }
+
+  .hero{
+    background:linear-gradient(120deg, var(--biz-blue-dark) 0%, var(--biz-blue) 55%, #3d8bfd 100%);
+    color:#fff;
+  }
+  .accent-blue{ border-left:5px solid var(--biz-blue); }
+  .accent-green{ border-left:5px solid var(--biz-green); }
+  .accent-red{ border-left:5px solid var(--biz-red); }
+  .accent-yellow{ border-left:5px solid var(--biz-yellow); }
+  .accent-orange{ border-left:5px solid var(--biz-orange); }
+
+  .section-title{
+    display:inline-flex; align-items:center; gap:.6rem;
+    padding-bottom:.4rem; border-bottom:3px solid var(--biz-blue);
+    margin-bottom:1.25rem;
+  }
+  .toc-num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:1.8rem; height:1.8rem; border-radius:50%;
+    background:var(--biz-yellow); color:#2b2b2b; font-weight:700; font-size:.85rem;
+    margin-right:.5rem; flex:none;
+  }
+  .toc-list a{ text-decoration:none; color:#212529; }
+  .toc-list a:hover{ color:var(--biz-blue); text-decoration:underline; }
+  .toc-item{ display:flex; align-items:center; padding:.4rem 0; }
+  .back-to-top{ font-size:.85rem; }
+  .color-key-dot{ width:.9rem; height:.9rem; border-radius:50%; display:inline-block; margin-right:.4rem; }
+  table thead th{ background:#eef3fb; }
+  .glossary-table thead th{ background:#04264d; color:#fff; }
+
+  /* Step-by-step walkthrough boxes */
+  .step-box{
+    background:#e9ecef;
+    border-radius:.5rem;
+    overflow:hidden;
+    margin:0 0 1.25rem;
+    box-shadow:0 .15rem .5rem rgba(0,0,0,.12);
+  }
+  .step-box .step-bar{
+    background:var(--nav-blue);
+    color:#5BF527;
+    font-weight:700;
+    padding:.5rem 1.1rem;
+    font-size:.95rem;
+    letter-spacing:.02em;
+  }
+  .step-box .step-body{ padding:1rem 1.25rem; }
+  .step-box .step-body p:last-child{ margin-bottom:0; }
+  .step-box .step-file{ font-size:.8rem; margin-bottom:.7rem; }
+  .step-box .step-file mark{
+    background:var(--biz-yellow);
+    color:#2b2b2b;
+    padding:.15rem .5rem;
+    border-radius:.25rem;
+    font-weight:600;
+  }
+
+  /* Small mock-up of the app's own UI */
+  .mock{ border:1px solid #ced4da; border-radius:.4rem; background:#fff; overflow:hidden; font-size:.82rem; max-width:24rem; }
+  .mock-nav{ background:#f1f3f5; border-bottom:1px solid #dee2e6; padding:.45rem .8rem; font-weight:600; }
+  .mock-orange{ background:#b45309; color:#fff; padding:.25rem .8rem; }
+  .mock-over{ background:#fff8dc; border:1px solid #f1e2a4; border-radius:.4rem; margin:.6rem; padding:.6rem; }
+  .mock-tiles{ display:grid; grid-template-columns:1fr 1fr; gap:.35rem; margin-top:.4rem; }
+  .mock-tile{ background:#fff; border:1px solid #f1e2a4; border-radius:.3rem; padding:.3rem .5rem; }
+  .mock-tile b{ display:block; font-size:1rem; }
+
+  .flow{ display:flex; flex-wrap:wrap; gap:.4rem; align-items:stretch; }
+  .flow .node{ flex:1 1 130px; background:#fff; border:1px solid #dee2e6; border-top:4px solid var(--biz-blue); border-radius:.4rem; padding:.55rem .6rem; font-size:.8rem; }
+  .flow .node b{ display:block; font-size:.85rem; }
+  .flow .node.ai{ border-top-color:#8250df; }
+  .flow .node.human{ border-top-color:var(--biz-green); }
+  .flow .arrow{ align-self:center; color:#6c757d; font-weight:700; }
+  .who{ font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:#6c757d; }
+  .num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+  footer{ background:var(--nav-blue); }
+  footer a{ color:#fff; }
+</style>
+</head>
+<body>
+
+<!-- STICKY TOP NAV -->
+<div class="topnav">
+  <span class="brand"><img class="brand-logo" src="logo.svg" alt="RAG Champ"></span>
+  <div class="tagline">AI INTERVIEW CHALLENGES</div>
+</div>
+
+<!-- HERO -->
+<header class="hero py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-9">
+        <span class="badge rounded-pill bg-warning text-dark mb-3">For IT professionals adopting AI · Challenge 001</span>
+        <h1 class="display-6 fw-bold">How This App Helps the User</h1>
+        <p class="lead mb-0">If you're an IT professional adopting AI, the hard part isn't getting answers from it. The hard part is deciding what to ask, what to trust, and when to stop. This app gives you a safe place to practise those decisions, and shows you the evidence of how you made them.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container my-5">
+
+  <!-- COLOR KEY -->
+  <div class="mb-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body py-3">
+        <div class="row g-2 small text-center text-md-start">
+          <div class="col-6 col-md"><span class="color-key-dot" style="background:var(--biz-blue);"></span>Blue: how it works</div>
+          <div class="col-6 col-md"><span class="color-key-dot" style="background:var(--biz-green);"></span>Green: what you do / takeaways</div>
+          <div class="col-6 col-md"><span class="color-key-dot" style="background:var(--biz-yellow);"></span>Yellow: definitions</div>
+          <div class="col-6 col-md"><span class="color-key-dot" style="background:var(--biz-orange);"></span>Orange: practice only</div>
+          <div class="col-12 col-md"><span class="color-key-dot" style="background:var(--biz-red);"></span>Red: limits of the app</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <section id="toc" class="mb-5">
+    <h2 class="section-title">Table of Contents</h2>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="row toc-list">
+          <div class="col-md-6">
+            <div class="toc-item"><span class="toc-num">1</span><a href="#answer">The Short Answer</a></div>
+            <div class="toc-item"><span class="toc-num">2</span><a href="#terms">What These Terms Mean Here</a></div>
+            <div class="toc-item"><span class="toc-num">3</span><a href="#loop">The Loop You Practise</a></div>
+            <div class="toc-item"><span class="toc-num">4</span><a href="#habits">Eight Habits the App Tests</a></div>
+            <div class="toc-item"><span class="toc-num">5</span><a href="#walkthrough">Step-by-Step: Where Each Habit Is Tested</a></div>
+          </div>
+          <div class="col-md-6">
+            <div class="toc-item"><span class="toc-num">6</span><a href="#results">How to Read Your Results</a></div>
+            <div class="toc-item"><span class="toc-num">7</span><a href="#role">Taking It Back to Your IT Role</a></div>
+            <div class="toc-item"><span class="toc-num">8</span><a href="#most">Getting the Most From It</a></div>
+            <div class="toc-item"><span class="toc-num">9</span><a href="#tech">Tech Requirements</a></div>
+            <div class="toc-item"><span class="toc-num">10</span><a href="#limits">What the App Doesn't Test Yet</a></div>
+            <div class="toc-item"><span class="toc-num">11</span><a href="#glossary">Glossary</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. ANSWER -->
+  <section id="answer" class="mb-5">
+    <h2 class="section-title">1. The Short Answer</h2>
+    <div class="card shadow-sm accent-blue mb-3">
+      <div class="card-body">
+        <p>The app doesn't ask what you know about AI. It puts you in a situation where you have to run the work yourself: set a goal, pick a tool, test it, read the failures, question the advice, and say honestly what's still broken.</p>
+        <p class="mb-0">Your final score matters less than how you got there. Two people can submit the same design, and the one who checked their work and named its limits gets the better profile.</p>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card shadow-sm accent-green h-100"><div class="card-body"><h6>It rewards judgment</h6><p class="small mb-0">A cheap design that works beats an expensive one. Bigger isn't automatically better.</p></div></div></div>
+      <div class="col-md-4"><div class="card shadow-sm accent-green h-100"><div class="card-body"><h6>It rewards checking</h6><p class="small mb-0">The app gives you a flawed AI tip and wrong test labels on purpose. Only checking catches them.</p></div></div></div>
+      <div class="col-md-4"><div class="card shadow-sm accent-green h-100"><div class="card-body"><h6>It rewards honesty</h6><p class="small mb-0">Some failures can't be tuned away. Naming them is the right answer.</p></div></div></div>
+    </div>
+    <p class="back-to-top mt-3"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 2. TERMS -->
+  <section id="terms" class="mb-5">
+    <h2 class="section-title">2. What These Terms Mean Here</h2>
+    <div class="card shadow-sm accent-yellow mb-3">
+      <div class="card-body">
+        <p>These are working definitions for this document, not industry standards.</p>
+        <p><strong>Agentic mindset:</strong> working the way a good agent works. You hold a goal, choose tools, act, observe the result, correct course, and know when to stop or escalate. You stay responsible for the outcome, even when AI did the work.</p>
+        <p class="mb-0"><strong>AI amplifier:</strong> someone whose output grows with AI because their judgment directs it. AI multiplies what you bring. Clear goals and good checks get multiplied, and so do vague goals and blind trust.</p>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>AI as a shortcut</th><th>AI as an amplifier</th></tr></thead>
+        <tbody>
+          <tr><td>Asks for the answer</td><td>States the goal, then asks for options and trade-offs</td></tr>
+          <tr><td>Accepts output that sounds right</td><td>Tests output against a measure</td></tr>
+          <tr><td>Reaches for the biggest tool</td><td>Finds the cheapest tool that's good enough</td></tr>
+          <tr><td>Retries when something fails</td><td>Finds out why it failed, then changes one thing</td></tr>
+          <tr><td>Reports only what worked</td><td>Reports what works and what doesn't</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 3. LOOP -->
+  <section id="loop" class="mb-5">
+    <h2 class="section-title">3. The Loop You Practise</h2>
+    <p>Challenge 001 asks you to design a search over 130 product reviews, with no coding. The search is only the setting. The real exercise is this loop, which is the same one a good agent runs:</p>
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <div class="flow">
+          <div class="node human"><span class="who">You</span><b>Plan</b>Set the goal and measure</div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="who">App</span><b>Act</b>Run a design</div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="who">App</span><b>Observe</b>Scores, cost, failures</div>
+          <div class="arrow">→</div>
+          <div class="node human"><span class="who">You</span><b>Diagnose</b>Work out why it failed</div>
+          <div class="arrow">→</div>
+          <div class="node ai"><span class="who">Your AI assistant</span><b>Consult</b>Ask, then verify</div>
+          <div class="arrow">→</div>
+          <div class="node human"><span class="who">You</span><b>Decide</b>Change, stop or submit</div>
+        </div>
+        <p class="small text-body-secondary mt-3 mb-0">You repeat the loop until you decide the design is good enough. That decision is yours, and it's part of what's tested.</p>
+      </div>
+    </div>
+    <div class="row g-3 align-items-center">
+      <div class="col-md-5">
+        <div class="mock" role="img" aria-label="Mock-up of the Lab screen showing nDCG 0.56, Recall 0.59, cost 862 units and 3 runs">
+          <div class="mock-nav">Lab</div>
+          <div class="mock-orange">Practice mode. Everything stays on this phone.</div>
+          <div class="mock-over"><strong>Semantic Product Finder</strong>
+            <div class="mock-tiles">
+              <div class="mock-tile">nDCG@5<b>0.56</b></div>
+              <div class="mock-tile">Recall@5<b>0.59</b></div>
+              <div class="mock-tile">Cost<b>862 units</b></div>
+              <div class="mock-tile">Runs<b>3</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <p class="mb-2">The Lab keeps quality and cost side by side on every run, so you can't look at one without the other. That's the trade-off an AI amplifier weighs every day.</p>
+        <p class="mb-0">It runs entirely in your phone's browser. You need no install or account, and your work stays on your device.</p>
+      </div>
+    </div>
+    <p class="back-to-top mt-3"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 4. HABITS -->
+  <section id="habits" class="mb-5">
+    <h2 class="section-title">4. Eight Habits the App Tests</h2>
+    <p>The evidence isn't equally strong for every habit, so the last column says how each one is captured.</p>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>Habit</th><th>What the app makes you do</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Define the goal first</strong></td><td>The Lab stays locked until you write a plan</td><td><span class="badge text-bg-warning">Self-review</span></td></tr>
+          <tr><td><strong>Pick the right-sized tool</strong></td><td>Choose between three engines with very different costs</td><td><span class="badge text-bg-success">Measured</span></td></tr>
+          <tr><td><strong>Work within a budget</strong></td><td>Every run adds cost units, and repeated trial and error shows</td><td><span class="badge text-bg-success">Measured</span></td></tr>
+          <tr><td><strong>Diagnose before changing</strong></td><td>Open failed queries and name the cause</td><td><span class="badge text-bg-primary">Logged</span></td></tr>
+          <tr><td><strong>Verify AI advice</strong></td><td>Respond to a flawed AI tip inside the Lab</td><td><span class="badge text-bg-primary">Logged</span></td></tr>
+          <tr><td><strong>Question the measure</strong></td><td>Spot the test labels that are wrong</td><td><span class="badge text-bg-primary">Logged</span></td></tr>
+          <tr><td><strong>Direct your AI well</strong></td><td>Use any assistant, and record what you asked and did with the answer</td><td><span class="badge text-bg-warning">Self-review</span></td></tr>
+          <tr><td><strong>Own the outcome</strong></td><td>State what still fails, and what changes at 1 million reviews</td><td><span class="badge text-bg-warning">Self-review</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card shadow-sm accent-yellow">
+      <div class="card-body small">
+        <strong>Measured:</strong> calculated from your design and the queries you never saw.
+        <strong>Logged:</strong> recorded from what you did in the app.
+        <strong>Self-review:</strong> you compare your work with a model answer and rate yourself.
+      </div>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 5. WALKTHROUGH -->
+  <section id="walkthrough" class="mb-5">
+    <h2 class="section-title">5. Step-by-Step: Where Each Habit Is Tested</h2>
+    <p>The numbers below come from running this path through the app's scoring code.</p>
+
+    <div class="step-box">
+      <div class="step-bar">Step 1: Start cheap</div>
+      <div class="step-body">
+        <div class="step-file"><mark>Habit: right-sized tool</mark></div>
+        <p>Keyword search alone scores <strong>0.42</strong> for <strong>136</strong> cost units. Now you have a baseline, so every later change has to earn its cost.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-bar">Step 2: Test the AI's advice</div>
+      <div class="step-body">
+        <div class="step-file"><mark>Habit: verify AI advice</mark></div>
+        <p>The app's AI tip sounds confident: set the minimum similarity to 0.8. Follow it, and the score collapses to <strong>0.13</strong>. Someone who trusts the tip submits a broken design. Someone who tests it sees the drop and rejects it.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-bar">Step 3: Change what the evidence points to</div>
+      <div class="step-body">
+        <div class="step-file"><mark>Habit: diagnose before changing</mark></div>
+        <p>Reading the failures points to long reviews burying key facts and duplicates filling the top five. Sentence chunks and duplicate removal lift the score to <strong>0.56</strong>, with no bigger model involved.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-bar">Step 4: Doubt the test itself</div>
+      <div class="step-body">
+        <div class="step-file"><mark>Habit: question the measure</mark></div>
+        <p>Three of the visible test labels are wrong on purpose. If you tune to them, you're chasing bad data. A metric is only as good as its labels, and this is true of any AI evaluation.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-bar">Step 5: Accept what can't be fixed</div>
+      <div class="step-body">
+        <div class="step-file"><mark>Habit: own the outcome</mark></div>
+        <p>Sarcasm, negation and comparison direction still fail. Even the larger MiniLM model scored no better on comparisons (0.64 against 0.69). The right move is to stop tuning and report the limit clearly.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-bar">Step 6: Face queries you haven't seen</div>
+      <div class="step-body">
+        <div class="step-file"><mark>Habit: pick the right-sized tool</mark></div>
+        <p>Your design is tested on 30 held-out queries. This path scores <strong>0.54</strong>. The best known design scores <strong>0.59</strong>, but needs MiniLM, which costs about ten times as much per token. Being close at a fraction of the cost counts as the stronger choice.</p>
+      </div>
+    </div>
+    <p class="back-to-top"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 6. RESULTS -->
+  <section id="results" class="mb-5">
+    <h2 class="section-title">6. How to Read Your Results</h2>
+    <p>You get a profile across six dimensions, not one number. Each rating shows its evidence, from <strong>Needs work</strong> through Developing and Good to <strong>Strong</strong>.</p>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>Dimension</th><th>Scored by</th><th>If it's low, practise this</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Problem decomposition</strong></td><td>Self-review</td><td>Write down the goal, the measure and the first step before you open an AI tool.</td></tr>
+          <tr><td><strong>AI tool selection</strong></td><td>Automatic</td><td>Try the cheapest option first, and only pay for more when you can measure the gain.</td></tr>
+          <tr><td><strong>AI utilization</strong></td><td>Self-review</td><td>Give your assistant real results and failures, and ask for trade-offs.</td></tr>
+          <tr><td><strong>Engineering efficiency</strong></td><td>Automatic</td><td>Read the failures between runs, instead of trying settings at random.</td></tr>
+          <tr><td><strong>Quality and validation</strong></td><td>Automatic</td><td>Add your own test cases, and look for traps before you submit.</td></tr>
+          <tr><td><strong>Production mindset</strong></td><td>Self-review</td><td>Ask what breaks at scale, how you'd notice, and who would need to know.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card shadow-sm accent-orange">
+      <div class="card-body small">
+        <strong>Practice scores only.</strong> The answers ship with the app, so a score can't prove anything to an employer. Use it to see your own habits. Phone speed never affects it.
+      </div>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 7. ROLE -->
+  <section id="role" class="mb-5">
+    <h2 class="section-title">7. Taking It Back to Your IT Role</h2>
+    <p>The challenge uses product reviews, but the decisions are the ones you'll meet at work. These are examples of how each lesson might apply.</p>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>In the challenge</th><th>In your role</th><th>The question to ask</th></tr></thead>
+        <tbody>
+          <tr><td>Keyword or embedding search</td><td>A regex, a script or an LLM for sorting tickets and logs</td><td>What's the simplest thing that's good enough?</td></tr>
+          <tr><td>The flawed 0.8 tip</td><td>An AI-suggested config, command or fix</td><td>How can I test this safely before relying on it?</td></tr>
+          <tr><td>Exact part numbers</td><td>Error codes, hostnames, ticket IDs</td><td>Does this need an exact match rather than a similar one?</td></tr>
+          <tr><td>Wrong test labels</td><td>Noisy alerts, stale runbooks, bad ticket categories</td><td>Is my measure itself trustworthy?</td></tr>
+          <tr><td>Long reviews and chunking</td><td>Long logs or documents given to an AI tool</td><td>Did the tool actually read the part that matters?</td></tr>
+          <tr><td>Held-out queries</td><td>Moving from a demo to real users</td><td>Does this work on cases I didn't tune it for?</td></tr>
+          <tr><td>Cost units</td><td>Token bills, latency, licence and review time</td><td>Is the improvement worth what it costs?</td></tr>
+          <tr><td>"What does it still get wrong?"</td><td>Handing over work or reporting to your manager</td><td>What should people not rely on this for?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 8. MOST -->
+  <section id="most" class="mb-5">
+    <h2 class="section-title">8. Getting the Most From It</h2>
+    <div class="card shadow-sm accent-green">
+      <div class="card-body">
+        <ol class="mb-0">
+          <li class="mb-2"><strong>Try it without any answers first.</strong> Your first attempt shows your real habits. A walkthrough only shows you someone else's.</li>
+          <li class="mb-2"><strong>Change one thing per run.</strong> If you change three settings, you won't know which one helped.</li>
+          <li class="mb-2"><strong>Give your assistant real evidence.</strong> Paste in your failed queries and scores, rather than asking in general terms.</li>
+          <li class="mb-2"><strong>Be strict in your self-review.</strong> Half the profile depends on it, so generous ticks only hide what you need to practise.</li>
+          <li class="mb-2"><strong>Retry and compare.</strong> Your past attempts stay on your device, so you can see what changed.</li>
+          <li><strong>Use one habit at work this week.</strong> Before you accept the next AI suggestion, write down how you'd know if it's wrong.</li>
+        </ol>
+      </div>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 9. TECH -->
+  <section id="tech" class="mb-5">
+    <h2 class="section-title">9. Tech Requirements</h2>
+    <p>The app is a website that runs entirely in the phone's browser. Users reach it through a link, so there's nothing to install.</p>
+
+    <h5 class="mt-4">How users reach it</h5>
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <div class="flow">
+          <div class="node human"><span class="who">You, once</span><b>Upload</b>Put <code>Web-App\public</code> on a static host</div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="who">Host</span><b>Get a link</b>An HTTPS address</div>
+          <div class="arrow">→</div>
+          <div class="node human"><span class="who">You</span><b>Share</b>Send the link or a QR code</div>
+          <div class="arrow">→</div>
+          <div class="node human"><span class="who">User</span><b>Tap</b>Opens in Chrome or Safari</div>
+          <div class="arrow">→</div>
+          <div class="node"><span class="who">Phone</span><b>Run</b>Model and scoring run on the device</div>
+        </div>
+      </div>
+    </div>
+    <p>The same link works on Android and iPhone. To keep an icon on the phone, users can add it to the home screen:</p>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>Phone</th><th>Open in</th><th>Add to the home screen</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Android</strong></td><td>Chrome</td><td>Menu (⋮), then <em>Add to Home screen</em></td></tr>
+          <tr><td><strong>iPhone</strong></td><td>Safari</td><td>Share, then <em>Add to Home Screen</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="mt-4">Can Python Exec Builder make a file that phones can open?</h5>
+    <div class="card shadow-sm accent-red mb-3">
+      <div class="card-body">
+        <p><strong>No, and this app doesn't need it.</strong> There are three separate reasons:</p>
+        <ul class="mb-0">
+          <li class="mb-2"><strong>Phones can't run an exe.</strong> An exe is a Windows program. Python Exec Builder's own guide says its exe works only on 64-bit Windows, and that a phone app is a different kind of package.</li>
+          <li class="mb-2"><strong>The builder needs a Flask app.</strong> It packages Python Flask apps with PyInstaller, which doesn't support Android. This app is plain HTML and JavaScript, with no Python to package.</li>
+          <li><strong>A link already does the job.</strong> Tapping a link is the "click and open in the browser" step. The builder's guide gives the same advice for phones: host it, don't package it.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>Option</th><th>Android</th><th>iPhone</th><th>Effort</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td><strong>HTTPS link</strong></td><td>Yes</td><td>Yes</td><td>Upload one folder</td><td><span class="badge text-bg-success">Use this</span></td></tr>
+          <tr><td><strong>Windows exe</strong></td><td>No</td><td>No</td><td>Not applicable</td><td><span class="badge text-bg-danger">Won't work</span></td></tr>
+          <tr><td><strong>App store app</strong> wrapping the site</td><td>Yes</td><td>Yes</td><td>Separate builds, developer accounts, store review</td><td><span class="badge text-bg-secondary">Only if a store listing is needed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="mt-4">What you need to host it</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>Item</th><th>Requirement</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Host</strong></td><td>Any static host, such as GitHub Pages, Netlify or Cloudflare Pages. No server code or database.</td></tr>
+          <tr><td><strong>HTTPS</strong></td><td>Required for offline mode.</td></tr>
+          <tr><td><strong>Space</strong></td><td>About 45 MB. The largest single file is about 14 MB.</td></tr>
+          <tr><td><strong>After each update</strong></td><td>Raise <code>VERSION</code> in <code>public\sw.js</code>, or returning phones keep the old copy.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5 class="mt-4">What the phone needs</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>Item</th><th>Requirement</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Android</strong></td><td>Chrome 92 or later</td></tr>
+          <tr><td><strong>iPhone</strong></td><td>iOS 15.4 or later. MiniLM needs iOS 16.4 or later.</td></tr>
+          <tr><td><strong>Internet</strong></td><td>Needed for the first visit and for each model's first download. After that, the app works offline.</td></tr>
+          <tr><td><strong>Account or install</strong></td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white">
+        <thead><tr><th>What the user does</th><th class="num">Download</th></tr></thead>
+        <tbody>
+          <tr><td>Open the app and run the challenge, comparing all three engines</td><td class="num">Under 1 MB</td></tr>
+          <tr><td>Try their own query with the Static engine</td><td class="num">7.6 MB, once</td></tr>
+          <tr><td>Try their own query with MiniLM</td><td class="num">37 MB, once</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card shadow-sm accent-orange">
+      <div class="card-body small">
+        <strong>Not yet confirmed.</strong> The app isn't hosted yet and hasn't run on a real phone. The browser versions above come from the features the code uses, not from device testing, and MiniLM hasn't run in a Safari engine. Use <em>Guide &gt; Device test</em> on real phones before promising support.
+      </div>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 10. LIMITS -->
+  <section id="limits" class="mb-5">
+    <h2 class="section-title">10. What the App Doesn't Test Yet</h2>
+    <div class="card shadow-sm accent-red mb-3">
+      <div class="card-body">
+        <p>The app tests the <strong>thinking behind</strong> agentic work. It doesn't yet test building or supervising a real agent.</p>
+        <ul class="mb-0">
+          <li class="mb-2"><strong>No real agents.</strong> You run the loop yourself. Nothing plans, calls tools or acts on its own, so you don't practise delegating to an agent, setting its permissions, or reviewing its multi-step work.</li>
+          <li class="mb-2"><strong>AI use is self-reported.</strong> The app can't see your assistant in the other tab. It only knows what you log, so prompt quality isn't measured.</li>
+          <li class="mb-2"><strong>The traps are limited.</strong> Once you know them, a repeat attempt tests memory more than judgment. There's only one dataset and one challenge so far.</li>
+          <li class="mb-2"><strong>It's one narrow task.</strong> Search is a good setting for judgment, but it doesn't cover coding, automation or incident work.</li>
+          <li class="mb-2"><strong>The benefit isn't proven.</strong> No pilot has run yet, so nobody has shown that these scores match real skill or that using the app changes behaviour at work.</li>
+          <li><strong>One scoring flaw is known.</strong> The exact-code trap can be credited only if you use a keyword weight, which is unfair to a reasonable design that doesn't.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card shadow-sm accent-blue">
+      <div class="card-body">
+        <h6>What would close these gaps</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle small mb-0">
+            <thead><tr><th>Addition</th><th>What it would add</th></tr></thead>
+            <tbody>
+              <tr><td>A built-in assistant with a token budget</td><td>Real evidence of how you prompt and verify</td></tr>
+              <tr><td>A challenge where you supervise an agent</td><td>Practice at delegating, setting limits and catching a bad step</td></tr>
+              <tr><td>New dataset variants on each attempt</td><td>Repeat attempts that test judgment, not memory</td></tr>
+              <tr><td>Challenges drawn from IT work, such as ticket routing</td><td>A shorter step from practice to your own role</td></tr>
+              <tr><td>A pilot with people of known skill</td><td>Proof that the scores mean something</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+  <!-- 11. GLOSSARY -->
+  <section id="glossary" class="mb-5">
+    <h2 class="section-title">11. Glossary</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle small bg-white glossary-table">
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SBERT</strong></td><td>A type of model that turns sentences into numbers, so that text with similar meaning can be found.</td></tr>
+          <tr><td><strong>Embedding</strong></td><td>Those numbers: a list that represents the meaning of some text.</td></tr>
+          <tr><td><strong>Engine</strong></td><td>The search method: Lexical (keywords), Static (a small embedding model) or MiniLM (a small transformer).</td></tr>
+          <tr><td><strong>Chunking</strong></td><td>Splitting long text into smaller pieces before searching it.</td></tr>
+          <tr><td><strong>nDCG@5</strong></td><td>How good the top five results are, rewarding the best ones appearing first. 1.0 is perfect.</td></tr>
+          <tr><td><strong>Recall@5</strong></td><td>The share of relevant reviews found in the top five.</td></tr>
+          <tr><td><strong>Cost units</strong></td><td>A count of the work a design needs. It's the same on every device.</td></tr>
+          <tr><td><strong>Held-out queries</strong></td><td>Test queries kept out of the Lab, used to check a design after you submit it.</td></tr>
+          <tr><td><strong>Static host</strong></td><td>A service that delivers website files and runs no code of its own.</td></tr>
+          <tr><td><strong>Trap</strong></td><td>A problem built into the challenge on purpose, to see whether you notice it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="back-to-top mt-2"><a href="#toc">↑ Back to Table of Contents</a></p>
+  </section>
+
+</main>
+
+<footer class="text-white py-4 mt-5">
+  <div class="container text-center small">
+    AI Interview Challenges: how the web app (<code class="text-white">LOCAL-MINI-MODEL\Web-App</code>) helps IT professionals practise an agentic mindset.
+  </div>
+</footer>
+
+</body>
+</html>

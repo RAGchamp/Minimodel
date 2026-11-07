@@ -1,0 +1,42 @@
+{
+  "best": 0.5949660332795307,
+  "bestConfig": {
+    "engine": "minilm",
+    "chunking": "sentence",
+    "hybrid": 0.2,
+    "threshold": 0,
+    "dedupe": true
+  },
+  "perEngine": {
+    "lexical": {
+      "ndcg": 0.4476471640885427,
+      "config": {
+        "engine": "lexical",
+        "chunking": "passage",
+        "hybrid": 0,
+        "threshold": 0,
+        "dedupe": false
+      }
+    },
+    "static": {
+      "ndcg": 0.543678194066553,
+      "config": {
+        "engine": "static",
+        "chunking": "sentence",
+        "hybrid": 0,
+        "threshold": 0,
+        "dedupe": false
+      }
+    },
+    "minilm": {
+      "ndcg": 0.5949660332795307,
+      "config": {
+        "engine": "minilm",
+        "chunking": "sentence",
+        "hybrid": 0.2,
+        "threshold": 0,
+        "dedupe": true
+      }
+    }
+  }
+}

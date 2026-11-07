@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Interview Challenges</title>
+<meta name="description" content="Practise AI engineering judgment with an SBERT-style model that runs on your phone.">
+<meta name="theme-color" content="#04264d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="css/app.css" rel="stylesheet">
+<script>
+  // Follow the system light/dark setting.
+  (function () {
+    var query = window.matchMedia('(prefers-color-scheme: dark)');
+    function apply() { document.documentElement.setAttribute('data-bs-theme', query.matches ? 'dark' : 'light'); }
+    apply();
+    if (query.addEventListener) query.addEventListener('change', apply);
+  })();
+</script>
+</head>
+<body>
+<header class="sba-topbar">
+  <a class="brand" href="#/" title="Challenges"><img src="logo.svg" alt="RAG Champ"></a>
+  <div class="tagline">AI INTERVIEW CHALLENGES</div>
+</header>
+<div class="practice-bar px-3 py-1 small text-center">
+  <b>Practice mode.</b> Everything stays on this phone.
+</div>
+<nav class="navbar navbar-expand-lg sba-menu" aria-label="Main menu">
+  <div class="container-fluid">
+    <span class="d-lg-none small fw-semibold" id="menu-title">Challenges</span>
+    <button class="navbar-toggler" type="button" id="menu-toggle" aria-controls="nav" aria-expanded="false" aria-label="Menu"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse sba-menu-grid" id="nav">
+      <div class="d-none d-lg-block"></div>
+      <ul class="navbar-nav justify-content-center flex-wrap" id="menu-links"></ul>
+      <div class="sba-engine-cell">
+        <select class="form-select form-select-sm sba-engine" id="engine-select" aria-label="Active engine"></select>
+      </div>
+    </div>
+  </div>
+</nav>
+<main class="container-fluid py-3 sba-main" id="view" tabindex="-1">
+  <p class="text-body-secondary">Loading...</p>
+</main>
+<div id="job-box" aria-live="polite"></div>
+<noscript><p class="p-3">This app needs JavaScript, because the model runs in your browser.</p></noscript>
+<script type="module" src="js/app/main.js"></script>
+</body>
+</html>

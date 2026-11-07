@@ -1,0 +1,20 @@
+{
+  "name": "micro-model-web-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SBERT-style micro model and AI interview challenge lab that runs entirely in a phone browser.",
+  "scripts": {
+    "fetch-models": "node tools/fetch-models.mjs",
+    "build": "node tools/build-all.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "e2e": "node tools/e2e.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "devDependencies": {
+    "bootstrap": "^5.3.3",
+    "onnxruntime-node": "1.30.0",
+    "onnxruntime-web": "1.31.1",
+    "playwright": "^1.65.0"
+  }
+}
