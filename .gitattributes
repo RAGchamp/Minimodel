@@ -1,0 +1,3 @@
+# The deployed site must stay byte-for-byte identical. vocab.txt is split on newlines, so a CRLF
+# conversion on a Windows checkout would silently break the tokenizer.
+Web-App/public/** -text
