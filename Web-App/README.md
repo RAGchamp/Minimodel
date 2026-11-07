@@ -19,7 +19,9 @@ Open the printed address on the phone. Plain `http://` works for everything exce
 
 ## Deploy it
 
-Upload the `public/` folder to any static host with HTTPS, such as GitHub Pages, Netlify or Cloudflare Pages. It has no server code, and all paths are relative, so it also works in a subfolder.
+**Live site:** https://ragchamp.github.io/Minimodel/ (GitHub Pages, from the root of `main`; the root `index.html` forwards to `Web-App/public/`).
+
+To host it elsewhere, upload the `public/` folder to any static host with HTTPS, such as Netlify or Cloudflare Pages. It has no server code, and all paths are relative, so it also works in a subfolder.
 
 **After changing any file, raise `VERSION` in `public/sw.js`.** Otherwise returning phones keep the cached copy.
 

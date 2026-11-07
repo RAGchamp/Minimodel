@@ -454,7 +454,7 @@ Checked on 2026-11-06. The npm versions and Hugging Face file sizes were read di
 
 ## 16. Build status
 
-Built on 2026-11-06 in `../Web-App`. See its README for how to run, test and deploy it. Where this section differs from the sections above, this section reflects what was actually built and measured.
+Built on 2026-11-06 in `../Web-App`, and live at https://ragchamp.github.io/Minimodel/ since 2026-11-07. See its README for how to run, test and deploy it. Where this section differs from the sections above, this section reflects what was actually built and measured.
 
 **Changed from the plan**
 
